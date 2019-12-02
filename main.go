@@ -1,25 +1,23 @@
+/*
+Copyright © 2019 rool <heqing@rool.me>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 package main
 
-import (
-	"github.com/gin-gonic/gin"
-)
-
+import "sre-sms/cmd"
 
 func main() {
-	// Disable Console Color, you don't need console color when writing the logs to file.
-	// gin.DisableConsoleColor()
-
-	// Logging to a file.
-	// f, _ := os.Create("server_sre_sms.log")
-	// gin.DefaultWriter = io.MultiWriter(f)
-
-	app := gin.Default()
-
-	app.GET("/status", func(c *gin.Context) {c.JSON(200, gin.H{"message": "pong",})})
-
-	// run
-	err := app.Run(":4000" )
-	if err != nil {
-		panic(err)
-	}
+  cmd.Execute()
 }
