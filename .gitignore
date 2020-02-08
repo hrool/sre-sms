@@ -221,3 +221,4 @@ dmypy.json
 
 sre-sms.code-workspace
 .vscode/launch.json
+admin/sms/migrations/00*.py

@@ -2,7 +2,6 @@ package auth
 
 import (
 	"encoding/base64"
-	"fmt"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -82,12 +81,10 @@ func authorizationHeader(user, password string) string {
 	return "Basic " + base64.StdEncoding.EncodeToString([]byte(base))
 }
 
+// LoadAuthData to load user,password and generate authpairs for BasicAuth
 func LoadAuthData() {
-	fmt.Println("old:", dbAuthPairs)
 	dbAccounts := Accounts{"admin": "admin"}
 	dbAccounts["admin"] = "admin" + strconv.Itoa(rand.Intn(10))
 	pairs := processAccounts(dbAccounts)
 	dbAuthPairs = pairs
-	fmt.Println("new:", dbAccounts)
-	fmt.Println("new:", dbAuthPairs)
 }

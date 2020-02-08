@@ -7,6 +7,7 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
+// Run start a http server use gin
 func Run() {
 	auth.LoadAuthData()
 	c := cron.New()
