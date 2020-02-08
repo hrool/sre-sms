@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 
+	"sre-sms/server"
 	"github.com/spf13/cobra"
 )
 
@@ -30,6 +31,7 @@ var serverCmd = &cobra.Command{
 send tasks to broker, use machinery.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("server called")
+		server.Run()
 	},
 }
 

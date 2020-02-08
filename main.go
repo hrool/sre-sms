@@ -19,5 +19,5 @@ package main
 import "sre-sms/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }
