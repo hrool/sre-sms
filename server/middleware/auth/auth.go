@@ -2,11 +2,12 @@ package auth
 
 import (
 	"encoding/base64"
-	"math/rand"
-	"net/http"
-	"strconv"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"sre-sms/db"
+	"strconv"
 )
 
 // AuthUserKey is the cookie name for user credential in basic auth.
@@ -82,9 +83,26 @@ func authorizationHeader(user, password string) string {
 }
 
 // LoadAuthData to load user,password and generate authpairs for BasicAuth
+// todo 后面需要区分第一次运行和计划任务运行, 计划运行的时候 不能panic, 允许出错.
+var ApiUsers map[string]db.Apiuser
+
 func LoadAuthData() {
-	dbAccounts := Accounts{"admin": "admin"}
-	dbAccounts["admin"] = "admin" + strconv.Itoa(rand.Intn(10))
+	dbAccounts := Accounts{}
+	mapApiusers := make(map[string]db.Apiuser)
+	apiusers, err := db.GetApiUsers()
+	if err != nil {
+		panic(err)
+	}
+	for _, apiuser := range apiusers {
+		if apiuser.Project.Enable == false {
+			continue
+		}
+		dbAccounts[apiuser.Username] = apiuser.Password
+		mapApiusers[apiuser.Username] = apiuser
+	}
+	fmt.Println(dbAccounts)
 	pairs := processAccounts(dbAccounts)
 	dbAuthPairs = pairs
+	ApiUsers = mapApiusers
+	fmt.Println(ApiUsers)
 }

@@ -5,9 +5,9 @@ from django.utils.html import format_html
 # 项目.
 class Project(models.Model):
     name = models.CharField(verbose_name='名称', max_length=20, unique=True)
-    timeout_retry = models.BooleanField(default=False, verbose_name='超时重试开关', help_text='仅事务类型短信生效')
-    note = models.TextField(verbose_name='备注', null=True, blank=True)
     enable = models.BooleanField(default=True, verbose_name='启用开关')
+    note = models.TextField(verbose_name='备注', null=True, blank=True)
+    timeout_retry = models.BooleanField(default=False, verbose_name='超时重试开关', help_text='仅事务类型短信生效')
     timeout = models.PositiveIntegerField(default=120, verbose_name='超时时间', help_text='仅timeout_retry=True有效')
     fail_retry = models.BooleanField(default=True, verbose_name='失败重试开关', help_text='失败后立即重试')
     strong_valid = models.BooleanField(default=True, verbose_name='手机号强校验开关', help_text='强校验,国家和地区,以及运营商号码段')
@@ -50,7 +50,7 @@ class Sms(models.Model):
                                 批量发送的营销类短信, 禁止使用事务类型, 避免影响事务短信的到达率,
                                 ''',
                                 default='transactional')
-    create_time = models.DateTimeField(auto_now_add=True, db_index=True)
+    create_time = models.DateTimeField(auto_now_add=True, editable=False, db_index=True)
     to = models.CharField(max_length=40, db_index=True)
     subject = models.CharField(max_length=60, help_text='短信主题', null=True, blank=True)  # 主题
     content = models.TextField(help_text='短信内容, html格式')
@@ -62,7 +62,7 @@ class Sms(models.Model):
         ('deliver', '到达成功'),
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, verbose_name='状态', editable=False)
-    update_time = models.DateTimeField(auto_now_add=True, verbose_name='状态更新时间', db_index=True)
+    update_time = models.DateTimeField(auto_now_add=True, verbose_name='状态更新时间', editable=False, db_index=True)
     def colored_status_property(self):
         if self.status in ['create', 'sent', 'deliver']:
             color_code = 'green'
